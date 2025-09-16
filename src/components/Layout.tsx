@@ -69,9 +69,11 @@ const Layout = () => {
               
               {/* Logo */}
               <div className="flex items-center">
-                <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center mr-3">
-                  <Package className="w-5 h-5 text-primary-foreground" />
-                </div>
+                <img 
+                  src="/src/assets/logo.jpeg" 
+                  alt="Company Logo" 
+                  className="w-10 h-10 rounded-lg mr-3 object-cover"
+                />
                 <h1 className="text-xl font-bold text-foreground">Inventory Manager</h1>
               </div>
             </div>
