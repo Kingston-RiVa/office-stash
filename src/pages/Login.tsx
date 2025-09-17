@@ -27,22 +27,30 @@ const Login = () => {
       {/* Government Header with Logos */}
       <div className="bg-white border-b border-border">
         <div className="px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-24">
+          <div className="flex flex-col sm:flex-row justify-between items-center py-4 min-h-[120px]">
             {/* County Government Logo - Left */}
-            <div className="flex items-center">
-              <img src="/src/assets/nyeri-county-logo.png" alt="County Government of Nyeri" className="w-20 h-20 object-contain" />
+            <div className="flex items-center mb-4 sm:mb-0">
+              <img src="/src/assets/nyeri-county-logo.png" alt="County Government of Nyeri" className="w-20 h-20 sm:w-24 sm:h-24 object-contain" />
             </div>
             
             {/* Centered Headings */}
-            <div className="text-center flex-1 mx-8">
-              <h1 className="text-3xl font-bold text-gray-800 mb-2">The County Government of Nyeri</h1>
-              <h2 className="text-xl font-semibold text-gray-700 mb-1">Department of Public Service and Solid Waste Management</h2>
-              <h3 className="text-lg font-medium text-primary">Inventory Manager</h3>
+            <div className="text-center flex-1 mx-4 sm:mx-8 mb-4 sm:mb-0">
+              <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800 mb-2">The County Government of Nyeri</h1>
+              <h2 className="text-base sm:text-lg lg:text-xl font-semibold text-gray-700 mb-3">Department of Public Service and Solid Waste Management</h2>
+              <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-black">Inventory Manager</h3>
             </div>
             
-            {/* Kenya Coat of Arms - Right */}
-            <div className="flex items-center">
-              <img src="/src/assets/kenya-coat-of-arms.png" alt="Kenya National Government" className="w-20 h-20 object-contain" />
+            {/* Kenya Coat of Arms and Button - Right */}
+            <div className="flex flex-col items-center space-y-3">
+              <img src="/src/assets/kenya-coat-of-arms.png" alt="Kenya National Government" className="w-20 h-20 sm:w-24 sm:h-24 object-contain" />
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => window.open('https://www.kenya.go.ke', '_blank')}
+                className="text-xs px-3 py-1 border-gray-400 hover:bg-gray-50"
+              >
+                Visit Portal
+              </Button>
             </div>
           </div>
         </div>
