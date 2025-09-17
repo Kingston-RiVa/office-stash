@@ -51,7 +51,7 @@ const Layout = () => {
           <div className="flex justify-between h-16">
             <div className="flex items-center">
               {/* Mobile menu button */}
-              <Button variant="ghost" size="sm" className="md:hidden mr-2" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+              <Button variant="ghost" size="sm" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="md:hidden mr-2 py-[10px] px-[20px] mx-[10px] my-0">
                 {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
               </Button>
               
