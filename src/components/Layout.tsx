@@ -2,78 +2,62 @@ import { useEffect, useState } from "react";
 import { useNavigate, useLocation, Outlet } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { 
-  Package, 
-  LayoutDashboard, 
-  PackagePlus, 
-  History, 
-  BarChart3, 
-  Users, 
-  LogOut,
-  Menu,
-  X
-} from "lucide-react";
-
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Package, LayoutDashboard, PackagePlus, History, BarChart3, Users, LogOut, Menu, X } from "lucide-react";
 const Layout = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
   useEffect(() => {
     const isAuthenticated = localStorage.getItem("isAuthenticated");
     if (!isAuthenticated) {
       navigate("/");
     }
   }, [navigate]);
-
   const handleLogout = () => {
     localStorage.removeItem("isAuthenticated");
     navigate("/");
   };
-
-  const navigation = [
-    { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-    { name: "Equipment", href: "/equipment", icon: Package },
-    { name: "Add Equipment", href: "/add-equipment", icon: PackagePlus },
-    { name: "History", href: "/history", icon: History },
-    { name: "Reports", href: "/reports", icon: BarChart3 },
-    { name: "Users", href: "/users", icon: Users },
-  ];
-
+  const navigation = [{
+    name: "Dashboard",
+    href: "/dashboard",
+    icon: LayoutDashboard
+  }, {
+    name: "Equipment",
+    href: "/equipment",
+    icon: Package
+  }, {
+    name: "Add Equipment",
+    href: "/add-equipment",
+    icon: PackagePlus
+  }, {
+    name: "History",
+    href: "/history",
+    icon: History
+  }, {
+    name: "Reports",
+    href: "/reports",
+    icon: BarChart3
+  }, {
+    name: "Users",
+    href: "/users",
+    icon: Users
+  }];
   const isActivePath = (path: string) => location.pathname === path;
-
-  return (
-    <div className="min-h-screen bg-background">
+  return <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="bg-card border-b border-border shadow-card">
         <div className="px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center">
               {/* Mobile menu button */}
-              <Button
-                variant="ghost"
-                size="sm"
-                className="md:hidden mr-2"
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              >
+              <Button variant="ghost" size="sm" className="md:hidden mr-2" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
                 {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
               </Button>
               
               {/* Logo */}
               <div className="flex items-center">
-                <img 
-                  src="/src/assets/county-logo.png" 
-                  alt="County Government Logo" 
-                  className="w-10 h-10 mr-3 object-contain"
-                />
+                <img src="/src/assets/county-logo.png" alt="County Government Logo" className="w-10 h-10 mr-3 object-contain" />
                 <h1 className="text-xl font-bold text-foreground">Inventory Manager</h1>
               </div>
             </div>
@@ -111,29 +95,20 @@ const Layout = () => {
         </div>
 
         {/* Mobile navigation */}
-        {isMobileMenuOpen && (
-          <div className="md:hidden border-t border-border bg-card">
+        {isMobileMenuOpen && <div className="md:hidden border-t border-border bg-card">
             <div className="px-2 pt-2 pb-3 space-y-1">
-              {navigation.map((item) => {
-                const Icon = item.icon;
-                return (
-                  <Button
-                    key={item.name}
-                    variant={isActivePath(item.href) ? "secondary" : "ghost"}
-                    className="w-full justify-start"
-                    onClick={() => {
-                      navigate(item.href);
-                      setIsMobileMenuOpen(false);
-                    }}
-                  >
+              {navigation.map(item => {
+            const Icon = item.icon;
+            return <Button key={item.name} variant={isActivePath(item.href) ? "secondary" : "ghost"} className="w-full justify-start" onClick={() => {
+              navigate(item.href);
+              setIsMobileMenuOpen(false);
+            }}>
                     <Icon className="mr-2 h-4 w-4" />
                     {item.name}
-                  </Button>
-                );
-              })}
+                  </Button>;
+          })}
             </div>
-          </div>
-        )}
+          </div>}
       </header>
 
       <div className="flex">
@@ -143,20 +118,13 @@ const Layout = () => {
             <div className="flex flex-col flex-grow bg-card border-r border-border pt-5 pb-4 overflow-y-auto">
               <div className="flex-grow flex flex-col">
                 <nav className="flex-1 px-2 space-y-1">
-                  {navigation.map((item) => {
-                    const Icon = item.icon;
-                    return (
-                      <Button
-                        key={item.name}
-                        variant={isActivePath(item.href) ? "secondary" : "ghost"}
-                        className="w-full justify-start"
-                        onClick={() => navigate(item.href)}
-                      >
+                  {navigation.map(item => {
+                  const Icon = item.icon;
+                  return <Button key={item.name} variant={isActivePath(item.href) ? "secondary" : "ghost"} className="w-full justify-start" onClick={() => navigate(item.href)}>
                         <Icon className="mr-3 h-4 w-4" />
                         {item.name}
-                      </Button>
-                    );
-                  })}
+                      </Button>;
+                })}
                 </nav>
               </div>
             </div>
@@ -172,8 +140,6 @@ const Layout = () => {
           </main>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default Layout;
