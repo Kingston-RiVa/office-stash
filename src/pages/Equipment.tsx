@@ -21,58 +21,73 @@ const Equipment = () => {
   const equipmentData = [
     {
       id: "EQ001",
-      name: "Dell OptiPlex 7090",
-      category: "Computer",
-      serialNumber: "DL789012345",
+      name: "Dell OptiPlex 7090 Desktop Computer",
+      category: "Desktop Computer",
       quantity: 15,
-      condition: "Good",
-      location: "Office Floor 2",
-      assignedTo: "IT Department",
-      status: "active"
+      condition: "Good"
     },
     {
       id: "EQ002", 
-      name: "HP LaserJet Pro 4025",
+      name: "HP LaserJet Pro 4025 Printer",
       category: "Printer",
-      serialNumber: "HP456789123",
       quantity: 3,
-      condition: "Excellent",
-      location: "Office Floor 1", 
-      assignedTo: "Admin",
-      status: "active"
+      condition: "Excellent"
     },
     {
       id: "EQ003",
-      name: "Samsung 32\" Monitor",
+      name: "Samsung 32\" LED Monitor",
       category: "Monitor",
-      serialNumber: "SM987654321",
       quantity: 25,
-      condition: "Good",
-      location: "Storage Room A",
-      assignedTo: "Unassigned",
-      status: "active"
+      condition: "Good"
     },
     {
       id: "EQ004",
-      name: "MacBook Pro 16\"",
+      name: "HP EliteBook 840 G8 Laptop",
       category: "Laptop",
-      serialNumber: "AP123456789",
       quantity: 8,
-      condition: "Excellent",
-      location: "IT Office",
-      assignedTo: "Development Team",
-      status: "active"
+      condition: "Excellent"
     },
     {
       id: "EQ005",
-      name: "Cisco IP Phone",
-      category: "Communication",
-      serialNumber: "CS456123789",
+      name: "Executive Office Desk (Wooden)",
+      category: "Office Furniture",
+      quantity: 12,
+      condition: "Good"
+    },
+    {
+      id: "EQ006",
+      name: "Ergonomic Office Chair",
+      category: "Office Furniture",
+      quantity: 20,
+      condition: "Good"
+    },
+    {
+      id: "EQ007",
+      name: "Canon imageCLASS MF445dw",
+      category: "Multifunction Printer",
       quantity: 2,
-      condition: "Poor",
-      location: "Office Floor 3",
-      assignedTo: "Sales Department",
-      status: "in repair"
+      condition: "Excellent"
+    },
+    {
+      id: "EQ008",
+      name: "Dell OptiPlex 3080 Mini PC",
+      category: "Mini PC",
+      quantity: 10,
+      condition: "Good"
+    },
+    {
+      id: "EQ009",
+      name: "Microsoft Surface Pro 8",
+      category: "Tablet",
+      quantity: 5,
+      condition: "Excellent"
+    },
+    {
+      id: "EQ010",
+      name: "Filing Cabinet (4-Drawer)",
+      category: "Storage Furniture",
+      quantity: 8,
+      condition: "Good"
     }
   ];
 
@@ -98,8 +113,7 @@ const Equipment = () => {
 
   const filteredEquipment = equipmentData.filter(item =>
     item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    item.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    item.location.toLowerCase().includes(searchQuery.toLowerCase())
+    item.category.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
@@ -153,12 +167,8 @@ const Equipment = () => {
                 <TableRow className="bg-muted/50">
                   <TableHead>Name</TableHead>
                   <TableHead>Category</TableHead>
-                  <TableHead>Serial Number</TableHead>
                   <TableHead>Quantity</TableHead>
                   <TableHead>Condition</TableHead>
-                  <TableHead>Location</TableHead>
-                  <TableHead>Assigned To</TableHead>
-                  <TableHead>Status</TableHead>
                   <TableHead>Actions</TableHead>
                 </TableRow>
               </TableHeader>
@@ -167,7 +177,6 @@ const Equipment = () => {
                   <TableRow key={item.id} className="hover:bg-muted/30">
                     <TableCell className="font-medium">{item.name}</TableCell>
                     <TableCell>{item.category}</TableCell>
-                    <TableCell className="font-mono text-sm">{item.serialNumber}</TableCell>
                     <TableCell>
                       <Badge variant="outline">{item.quantity}</Badge>
                     </TableCell>
@@ -176,9 +185,6 @@ const Equipment = () => {
                         {item.condition}
                       </span>
                     </TableCell>
-                    <TableCell>{item.location}</TableCell>
-                    <TableCell>{item.assignedTo}</TableCell>
-                    <TableCell>{getStatusBadge(item.status)}</TableCell>
                     <TableCell>
                       <div className="flex gap-2">
                         <Button variant="ghost" size="sm">

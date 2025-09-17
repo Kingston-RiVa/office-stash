@@ -47,6 +47,31 @@ const Layout = () => {
   return <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="bg-card border-b border-border shadow-card">
+        {/* Government Header with Logos */}
+        <div className="bg-white border-b border-border">
+          <div className="px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-between items-center h-20">
+              {/* County Government Logo - Left */}
+              <div className="flex items-center">
+                <img src="/src/assets/nyeri-county-logo.png" alt="County Government of Nyeri" className="w-16 h-16 object-contain" />
+              </div>
+              
+              {/* Centered Headings */}
+              <div className="text-center flex-1 mx-8">
+                <h1 className="text-2xl font-bold text-gray-800 mb-1">The County Government of Nyeri</h1>
+                <h2 className="text-lg font-semibold text-gray-700 mb-1">Department of Public Service and Solid Waste Management</h2>
+                <h3 className="text-base font-medium text-primary">Inventory Manager</h3>
+              </div>
+              
+              {/* Kenya Coat of Arms - Right */}
+              <div className="flex items-center">
+                <img src="/src/assets/kenya-coat-of-arms.png" alt="Kenya National Government" className="w-16 h-16 object-contain" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Navigation Header */}
         <div className="px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center">
@@ -54,12 +79,6 @@ const Layout = () => {
               <Button variant="ghost" size="sm" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="md:hidden mr-2 py-[10px] px-[20px] mx-[10px] my-0">
                 {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
               </Button>
-              
-              {/* Logo */}
-              <div className="flex items-center">
-                <img src="/src/assets/county-logo.png" alt="County Government Logo" className="w-10 h-10 mr-3 object-contain" />
-                <h1 className="text-xl font-bold text-foreground">Inventory Manager</h1>
-              </div>
             </div>
 
             {/* User menu */}

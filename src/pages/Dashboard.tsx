@@ -25,13 +25,6 @@ const Dashboard = () => {
       change: "+2 this month",
       icon: Users,
       color: "text-success"
-    },
-    {
-      title: "Equipment Value",
-      value: "$45,230",
-      change: "+5.2%",
-      icon: TrendingUp,
-      color: "text-primary"
     }
   ];
 
@@ -59,7 +52,7 @@ const Dashboard = () => {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {stats.map((stat) => (
           <Card key={stat.title} className="shadow-card">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
