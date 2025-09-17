@@ -52,7 +52,7 @@ const Login = () => {
             <CardHeader className="text-center space-y-4">
               
               <div>
-                <CardTitle className="text-2xl font-bold mx-[20px] px-[20px]">
+                <CardTitle className="text-2xl mx-[20px] px-[20px] font-bold">
                   {isSignUp ? "Create Account" : "Sign In"}
                 </CardTitle>
                 <CardDescription className="text-muted-foreground mt-2">
