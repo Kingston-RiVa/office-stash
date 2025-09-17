@@ -66,14 +66,7 @@ const Layout = () => {
               {/* Kenya Coat of Arms and Button - Right */}
               <div className="flex flex-col items-center space-y-3">
                 <img src="/src/assets/kenya-coat-of-arms.png" alt="Kenya National Government" className="w-20 h-20 sm:w-24 sm:h-24 object-contain" />
-                <Button 
-                  variant="outline" 
-                  size="sm"
-                  onClick={() => window.open('https://www.kenya.go.ke', '_blank')}
-                  className="text-xs px-3 py-1 border-gray-400 hover:bg-gray-50"
-                >
-                  Visit Portal
-                </Button>
+                
               </div>
             </div>
           </div>
