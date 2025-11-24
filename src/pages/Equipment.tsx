@@ -1,104 +1,76 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Plus, Search, Filter, Eye, Edit, Trash2 } from "lucide-react";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import { useUserRole } from "@/hooks/useUserRole";
+import { useAuth } from "@/hooks/useAuth";
 
 const Equipment = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const { isStaff, isAdmin, loading: roleLoading } = useUserRole(user?.id);
   const [searchQuery, setSearchQuery] = useState("");
+  const [equipment, setEquipment] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
 
-  const equipmentData = [
-    {
-      id: "EQ001",
-      name: "Dell OptiPlex 7090 Desktop Computer",
-      category: "Desktop Computer",
-      quantity: 15,
-      condition: "Good"
-    },
-    {
-      id: "EQ002", 
-      name: "HP LaserJet Pro 4025 Printer",
-      category: "Printer",
-      quantity: 3,
-      condition: "Excellent"
-    },
-    {
-      id: "EQ003",
-      name: "Samsung 32\" LED Monitor",
-      category: "Monitor",
-      quantity: 25,
-      condition: "Good"
-    },
-    {
-      id: "EQ004",
-      name: "HP EliteBook 840 G8 Laptop",
-      category: "Laptop",
-      quantity: 8,
-      condition: "Excellent"
-    },
-    {
-      id: "EQ005",
-      name: "Executive Office Desk (Wooden)",
-      category: "Office Furniture",
-      quantity: 12,
-      condition: "Good"
-    },
-    {
-      id: "EQ006",
-      name: "Ergonomic Office Chair",
-      category: "Office Furniture",
-      quantity: 20,
-      condition: "Good"
-    },
-    {
-      id: "EQ007",
-      name: "Canon imageCLASS MF445dw",
-      category: "Multifunction Printer",
-      quantity: 2,
-      condition: "Excellent"
-    },
-    {
-      id: "EQ008",
-      name: "Dell OptiPlex 3080 Mini PC",
-      category: "Mini PC",
-      quantity: 10,
-      condition: "Good"
-    },
-    {
-      id: "EQ009",
-      name: "Microsoft Surface Pro 8",
-      category: "Tablet",
-      quantity: 5,
-      condition: "Excellent"
-    },
-    {
-      id: "EQ010",
-      name: "Filing Cabinet (4-Drawer)",
-      category: "Storage Furniture",
-      quantity: 8,
-      condition: "Good"
+  useEffect(() => {
+    fetchEquipment();
+  }, []);
+
+  const fetchEquipment = async () => {
+    const { data, error } = await supabase
+      .from("equipment")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      toast({
+        title: "Error",
+        description: "Failed to fetch equipment",
+        variant: "destructive",
+      });
+    } else {
+      setEquipment(data || []);
     }
-  ];
+    setLoading(false);
+  };
 
-  const getStatusBadge = (status: string) => {
-    const variants = {
-      active: "default",
-      "in repair": "destructive", 
-      retired: "secondary"
-    } as const;
-    
-    return <Badge variant={variants[status as keyof typeof variants] || "default"}>{status}</Badge>;
+  const handleDelete = async (id: string) => {
+    if (!isAdmin) {
+      toast({
+        title: "Permission Denied",
+        description: "Only admins can delete equipment",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!confirm("Are you sure you want to delete this equipment?")) {
+      return;
+    }
+
+    const { error } = await supabase.from("equipment").delete().eq("id", id);
+
+    if (error) {
+      toast({
+        title: "Error",
+        description: "Failed to delete equipment",
+        variant: "destructive",
+      });
+    } else {
+      toast({
+        title: "Success",
+        description: "Equipment deleted successfully",
+      });
+      fetchEquipment();
+    }
   };
 
   const getConditionColor = (condition: string) => {
@@ -106,15 +78,27 @@ const Equipment = () => {
       Excellent: "text-success",
       Good: "text-primary",
       Fair: "text-warning",
-      Poor: "text-destructive"
+      Poor: "text-destructive",
     };
     return colors[condition as keyof typeof colors] || "text-muted-foreground";
   };
 
-  const filteredEquipment = equipmentData.filter(item =>
-    item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    item.category.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredEquipment = equipment.filter(
+    (item) =>
+      item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.category.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  if (loading || roleLoading) {
+    return (
+      <div className="flex items-center justify-center h-96">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+          <p className="mt-4 text-muted-foreground">Loading equipment...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -125,13 +109,15 @@ const Equipment = () => {
             Manage all your office equipment and assets
           </p>
         </div>
-        <Button 
-          onClick={() => navigate("/add-equipment")}
-          className="bg-gradient-primary hover:bg-primary-hover"
-        >
-          <Plus className="w-4 h-4 mr-2" />
-          Add Equipment
-        </Button>
+        {isStaff && (
+          <Button
+            onClick={() => navigate("/add-equipment")}
+            className="bg-gradient-primary hover:bg-primary-hover"
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            Add Equipment
+          </Button>
+        )}
       </div>
 
       {/* Search and Filters */}
@@ -167,39 +153,74 @@ const Equipment = () => {
                 <TableRow className="bg-muted/50">
                   <TableHead>Name</TableHead>
                   <TableHead>Category</TableHead>
+                  <TableHead>Serial Number</TableHead>
                   <TableHead>Quantity</TableHead>
                   <TableHead>Condition</TableHead>
+                  <TableHead>Status</TableHead>
                   <TableHead>Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredEquipment.map((item) => (
-                  <TableRow key={item.id} className="hover:bg-muted/30">
-                    <TableCell className="font-medium">{item.name}</TableCell>
-                    <TableCell>{item.category}</TableCell>
-                    <TableCell>
-                      <Badge variant="outline">{item.quantity}</Badge>
-                    </TableCell>
-                    <TableCell>
-                      <span className={getConditionColor(item.condition)}>
-                        {item.condition}
-                      </span>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex gap-2">
-                        <Button variant="ghost" size="sm">
-                          <Eye className="w-4 h-4" />
-                        </Button>
-                        <Button variant="ghost" size="sm">
-                          <Edit className="w-4 h-4" />
-                        </Button>
-                        <Button variant="ghost" size="sm" className="text-destructive hover:text-destructive">
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
-                      </div>
+                {filteredEquipment.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={7} className="text-center text-muted-foreground py-8">
+                      No equipment found. {isStaff && "Add your first equipment item to get started."}
                     </TableCell>
                   </TableRow>
-                ))}
+                ) : (
+                  filteredEquipment.map((item) => (
+                    <TableRow key={item.id} className="hover:bg-muted/30">
+                      <TableCell className="font-medium">{item.name}</TableCell>
+                      <TableCell>{item.category}</TableCell>
+                      <TableCell className="font-mono text-sm">{item.serial_number}</TableCell>
+                      <TableCell>
+                        <Badge variant="outline">{item.quantity}</Badge>
+                      </TableCell>
+                      <TableCell>
+                        <span className={getConditionColor(item.condition)}>
+                          {item.condition}
+                        </span>
+                      </TableCell>
+                      <TableCell>
+                        <Badge
+                          variant={
+                            item.status === "Available"
+                              ? "default"
+                              : item.status === "In Use"
+                              ? "secondary"
+                              : "destructive"
+                          }
+                        >
+                          {item.status}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex gap-2">
+                          <Button variant="ghost" size="sm">
+                            <Eye className="w-4 h-4" />
+                          </Button>
+                          {isStaff && (
+                            <>
+                              <Button variant="ghost" size="sm">
+                                <Edit className="w-4 h-4" />
+                              </Button>
+                              {isAdmin && (
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  className="text-destructive hover:text-destructive"
+                                  onClick={() => handleDelete(item.id)}
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </Button>
+                              )}
+                            </>
+                          )}
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
               </TableBody>
             </Table>
           </div>
