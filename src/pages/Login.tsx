@@ -12,7 +12,7 @@ import { loginSchema, signupSchema } from "@/lib/validations";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [fullName, setFullName] = useState("");
+  const [username, setUsername] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -32,7 +32,7 @@ const Login = () => {
 
     try {
       if (isSignUp) {
-        const validation = signupSchema.safeParse({ email, password, fullName });
+        const validation = signupSchema.safeParse({ email, password, fullName: username });
         if (!validation.success) {
           toast({
             title: "Validation Error",
@@ -43,7 +43,7 @@ const Login = () => {
           return;
         }
 
-        const { error } = await signUp(email, password, fullName);
+        const { error } = await signUp(email, password, username);
         if (error) {
           toast({
             title: "Sign Up Failed",
@@ -102,7 +102,7 @@ const Login = () => {
             {/* Centered Headings */}
             <div className="text-center flex-1 mx-4 sm:mx-8 mb-4 sm:mb-0">
               <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800 mb-2">The County Government of Nyeri</h1>
-              <h2 className="text-base sm:text-lg lg:text-xl font-semibold text-gray-700 mb-3">Department of Public Service and Solid Waste Management</h2>
+              <h2 className="text-base sm:text-lg lg:text-xl font-semibold text-gray-700 mb-3">Department of Solid Waste Management</h2>
               <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-black">Inventory Manager</h3>
             </div>
             
@@ -132,13 +132,13 @@ const Login = () => {
               <form onSubmit={handleSubmit} className="space-y-4">
                 {isSignUp && (
                   <div className="space-y-2">
-                    <Label htmlFor="fullName">Full Name</Label>
+                    <Label htmlFor="username">Username (Optional)</Label>
                     <Input
-                      id="fullName"
+                      id="username"
                       type="text"
-                      placeholder="Enter your full name"
-                      value={fullName}
-                      onChange={(e) => setFullName(e.target.value)}
+                      placeholder="Choose a username"
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
                       className="h-11"
                       disabled={isLoading}
                     />
@@ -146,11 +146,11 @@ const Login = () => {
                 )}
 
                 <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
+                  <Label htmlFor="email">{isSignUp ? "Email" : "Email or Username"}</Label>
                   <Input
                     id="email"
-                    type="email"
-                    placeholder="Enter your email"
+                    type="text"
+                    placeholder={isSignUp ? "Enter your email" : "Enter your email or username"}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
@@ -188,6 +188,18 @@ const Login = () => {
                       )}
                     </Button>
                   </div>
+                  {!isSignUp && (
+                    <div className="text-right">
+                      <Button
+                        type="button"
+                        variant="link"
+                        className="text-sm text-primary hover:underline p-0 h-auto min-h-[44px]"
+                        onClick={() => navigate("/forgot-password")}
+                      >
+                        Forgot password?
+                      </Button>
+                    </div>
+                  )}
                 </div>
 
                 <Button

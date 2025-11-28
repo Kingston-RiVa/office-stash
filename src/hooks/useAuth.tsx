@@ -29,27 +29,64 @@ export function useAuth() {
     return () => subscription.unsubscribe();
   }, []);
 
-  const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-    return { error };
+  const signIn = async (emailOrUsername: string, password: string) => {
+    // Check if input is email or username
+    const isEmail = emailOrUsername.includes('@');
+    
+    if (isEmail) {
+      // Direct sign in with email
+      const { error } = await supabase.auth.signInWithPassword({
+        email: emailOrUsername,
+        password,
+      });
+      return { error };
+    } else {
+      // Find email by username
+      const { data: profile, error: profileError } = await supabase
+        .from('profiles')
+        .select('email')
+        .eq('username', emailOrUsername)
+        .maybeSingle();
+
+      if (profileError || !profile) {
+        return { error: { message: 'Invalid username or password' } };
+      }
+
+      // Sign in with email
+      const { error } = await supabase.auth.signInWithPassword({
+        email: profile.email,
+        password,
+      });
+      return { error };
+    }
   };
 
-  const signUp = async (email: string, password: string, fullName?: string) => {
+  const signUp = async (email: string, password: string, username?: string) => {
     const redirectUrl = `${window.location.origin}/dashboard`;
     
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
         emailRedirectTo: redirectUrl,
         data: {
-          full_name: fullName || email,
+          full_name: email,
         },
       },
     });
+
+    // If username provided, update profile
+    if (!error && data.user && username) {
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .update({ username: username })
+        .eq('id', data.user.id);
+      
+      if (profileError) {
+        console.error('Error updating username:', profileError);
+      }
+    }
+
     return { error };
   };
 
