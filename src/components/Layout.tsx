@@ -82,7 +82,7 @@ const Layout = () => {
             <div className="flex flex-col sm:flex-row justify-between items-center py-4 min-h-[120px]">
               {/* County Government Logo - Left */}
               <div className="flex items-center mb-4 sm:mb-0">
-                <img src="/src/assets/nyeri-county-logo.png" alt="County Government of Nyeri" className="w-20 h-20 sm:w-24 sm:h-24 object-contain" />
+                <img alt="County Government of Nyeri" className="w-20 h-20 sm:w-24 sm:h-24 object-contain" src="/lovable-uploads/40b91e35-90e3-4ee1-a65a-a9f97e285e78.png" />
               </div>
               
               {/* Centered Headings */}
