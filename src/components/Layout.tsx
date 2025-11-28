@@ -6,65 +6,74 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { Package, LayoutDashboard, PackagePlus, History, BarChart3, Users, LogOut, Menu, X } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
-
 const Layout = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { user, loading, signOut } = useAuth();
-  const { toast } = useToast();
-
+  const {
+    user,
+    loading,
+    signOut
+  } = useAuth();
+  const {
+    toast
+  } = useToast();
   useEffect(() => {
     if (!loading && !user) {
       navigate("/");
     }
   }, [user, loading, navigate]);
-
   const handleLogout = async () => {
-    const { error } = await signOut();
+    const {
+      error
+    } = await signOut();
     if (error) {
       toast({
         title: "Logout Failed",
         description: error.message,
-        variant: "destructive",
+        variant: "destructive"
       });
     }
   };
-
   if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
+    return <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
           <p className="mt-4 text-muted-foreground">Loading...</p>
         </div>
-      </div>
-    );
+      </div>;
   }
-
   if (!user) {
     return null;
   }
-
-  const navigation = [
-    { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-    { name: "Equipment", href: "/equipment", icon: Package },
-    { name: "Add Equipment", href: "/add-equipment", icon: PackagePlus },
-    { name: "History", href: "/history", icon: History },
-    { name: "Reports", href: "/reports", icon: BarChart3 },
-    { name: "Users", href: "/users", icon: Users },
-  ];
-
+  const navigation = [{
+    name: "Dashboard",
+    href: "/dashboard",
+    icon: LayoutDashboard
+  }, {
+    name: "Equipment",
+    href: "/equipment",
+    icon: Package
+  }, {
+    name: "Add Equipment",
+    href: "/add-equipment",
+    icon: PackagePlus
+  }, {
+    name: "History",
+    href: "/history",
+    icon: History
+  }, {
+    name: "Reports",
+    href: "/reports",
+    icon: BarChart3
+  }, {
+    name: "Users",
+    href: "/users",
+    icon: Users
+  }];
   const isActivePath = (path: string) => location.pathname === path;
-
-  const userInitials = user.user_metadata?.full_name
-    ?.split(" ")
-    .map((n: string) => n[0])
-    .join("")
-    .toUpperCase() || user.email?.substring(0, 2).toUpperCase() || "U";
-
-  return (
-    <div className="min-h-screen bg-background">
+  const userInitials = user.user_metadata?.full_name?.split(" ").map((n: string) => n[0]).join("").toUpperCase() || user.email?.substring(0, 2).toUpperCase() || "U";
+  return <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="bg-card border-b border-border shadow-card">
         {/* Government Header with Logos */}
@@ -85,7 +94,7 @@ const Layout = () => {
               
               {/* Kenya Coat of Arms - Right */}
               <div className="flex flex-col items-center space-y-3">
-                <img src="/src/assets/kenya-coat-of-arms.png" alt="Kenya National Government" className="w-20 h-20 sm:w-24 sm:h-24 object-contain" />
+                <img alt="Kenya National Government" className="w-20 h-20 sm:w-24 sm:h-24 object-contain" src="/lovable-uploads/11b10204-9fba-4d51-b207-d83920e32f7d.png" />
               </div>
             </div>
           </div>
@@ -96,12 +105,7 @@ const Layout = () => {
           <div className="flex justify-between h-16">
             <div className="flex items-center">
               {/* Mobile menu button */}
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="md:hidden mr-2 py-[10px] px-[20px] mx-[10px] my-0"
-              >
+              <Button variant="ghost" size="sm" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="md:hidden mr-2 py-[10px] px-[20px] mx-[10px] my-0">
                 {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
               </Button>
             </div>
@@ -141,29 +145,20 @@ const Layout = () => {
         </div>
 
         {/* Mobile navigation */}
-        {isMobileMenuOpen && (
-          <div className="md:hidden border-t border-border bg-card">
+        {isMobileMenuOpen && <div className="md:hidden border-t border-border bg-card">
             <div className="px-2 pt-2 pb-3 space-y-1">
-              {navigation.map((item) => {
-                const Icon = item.icon;
-                return (
-                  <Button
-                    key={item.name}
-                    variant={isActivePath(item.href) ? "secondary" : "ghost"}
-                    className="w-full justify-start"
-                    onClick={() => {
-                      navigate(item.href);
-                      setIsMobileMenuOpen(false);
-                    }}
-                  >
+              {navigation.map(item => {
+            const Icon = item.icon;
+            return <Button key={item.name} variant={isActivePath(item.href) ? "secondary" : "ghost"} className="w-full justify-start" onClick={() => {
+              navigate(item.href);
+              setIsMobileMenuOpen(false);
+            }}>
                     <Icon className="mr-2 h-4 w-4" />
                     {item.name}
-                  </Button>
-                );
-              })}
+                  </Button>;
+          })}
             </div>
-          </div>
-        )}
+          </div>}
       </header>
 
       <div className="flex">
@@ -173,20 +168,13 @@ const Layout = () => {
             <div className="flex flex-col flex-grow bg-card border-r border-border pt-5 pb-4 overflow-y-auto">
               <div className="flex-grow flex flex-col">
                 <nav className="flex-1 px-2 space-y-1">
-                  {navigation.map((item) => {
-                    const Icon = item.icon;
-                    return (
-                      <Button
-                        key={item.name}
-                        variant={isActivePath(item.href) ? "secondary" : "ghost"}
-                        className="w-full justify-start"
-                        onClick={() => navigate(item.href)}
-                      >
+                  {navigation.map(item => {
+                  const Icon = item.icon;
+                  return <Button key={item.name} variant={isActivePath(item.href) ? "secondary" : "ghost"} className="w-full justify-start" onClick={() => navigate(item.href)}>
                         <Icon className="mr-3 h-4 w-4" />
                         {item.name}
-                      </Button>
-                    );
-                  })}
+                      </Button>;
+                })}
                 </nav>
               </div>
             </div>
@@ -202,8 +190,6 @@ const Layout = () => {
           </main>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default Layout;
