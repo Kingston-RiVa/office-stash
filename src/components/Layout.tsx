@@ -79,7 +79,7 @@ const Layout = () => {
               {/* Centered Headings */}
               <div className="text-center flex-1 mx-4 sm:mx-8 mb-4 sm:mb-0">
                 <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800 mb-2">The County Government of Nyeri</h1>
-                <h2 className="text-base sm:text-lg lg:text-xl font-semibold text-gray-700 mb-3">Department of Public Service and Solid Waste Management</h2>
+                <h2 className="text-base sm:text-lg lg:text-xl font-semibold text-gray-700 mb-3">Department of Solid Waste Management</h2>
                 <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-black">Inventory Manager</h3>
               </div>
               
