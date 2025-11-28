@@ -105,7 +105,7 @@ const Login = () => {
           <div className="flex flex-col sm:flex-row justify-between items-center py-4 min-h-[120px]">
             {/* County Government Logo - Left */}
             <div className="flex items-center mb-4 sm:mb-0">
-              <img src="/src/assets/nyeri-county-logo.png" alt="County Government of Nyeri" className="w-20 h-20 sm:w-24 sm:h-24 object-contain" />
+              <img alt="County Government of Nyeri" className="w-20 h-20 sm:w-24 sm:h-24 object-contain" src="/lovable-uploads/0e421e84-b65b-43cc-8cd0-d1345080202f.png" />
             </div>
             
             {/* Centered Headings */}
